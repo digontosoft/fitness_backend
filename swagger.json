@@ -1,0 +1,1423 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Gafarsa logistics api documentations",
+    "version": "1.0.0",
+    "title": "Gafarsa Logistics API Documentations",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Everything Authentication"
+    },
+    {
+      "name": "Users",
+      "description": "Users related api"
+    },
+    {
+      "name": "Chat",
+      "description": "Operations related to chat functionalities"
+    }
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter JWT Bearer token as **Bearer &lt;token>**"
+    }
+  },
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Registers a single user",
+        "description": "Creates a new user with the provided information.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "User to be registered",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/register"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User registered successfully",
+            "schema": {
+              "$ref": "#/definitions/registerResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login a single user",
+        "description": "Login with email and password",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "login",
+            "description": "Login with username and password",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successfully login",
+            "schema": {
+              "$ref": "#/definitions/loginResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users",
+        "description": "Retrieves a list of all user data.",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of users.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user by ID",
+        "description": "Retrieves a single user by ID.",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to retrieve",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single user.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update user by ID",
+        "description": "Updates a single user's information.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to update",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "description": "User object with updated fields",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User updated successfully."
+          },
+          "400": {
+            "description": "Invalid user supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete user by ID",
+        "description": "Deletes a single user.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to delete",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted successfully."
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/agent-users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all Agent users",
+        "description": "Retrieves a list of all agent user data.",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of users.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/shipments": {
+      "get": {
+        "tags": ["Shipments"],
+        "summary": "Get all shipments",
+        "description": "Retrieves a list of all shipments.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "A list of shipments.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Shipment"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Shipments"],
+        "summary": "Create a new shipment",
+        "description": "Creates a new shipment with the provided information.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "shipment",
+            "description": "Shipment to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Shipment"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Shipment created successfully"
+          },
+          "400": {
+            "description": "Invalid input provided"
+          }
+        }
+      }
+    },
+    "/shipments/{id}": {
+      "get": {
+        "tags": ["Shipments"],
+        "summary": "Get a shipment by ID",
+        "description": "Retrieves a single shipment by its ID.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the shipment to retrieve",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single shipment.",
+            "schema": {
+              "$ref": "#/definitions/Shipment"
+            }
+          },
+          "404": {
+            "description": "Shipment not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Shipments"],
+        "summary": "Update a shipment by ID",
+        "description": "Updates an existing shipment's information.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the shipment to update",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "shipment",
+            "description": "Shipment object with updated fields",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Shipment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Shipment updated successfully."
+          },
+          "400": {
+            "description": "Invalid input supplied"
+          },
+          "404": {
+            "description": "Shipment not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Shipments"],
+        "summary": "Delete a shipment by ID",
+        "description": "Deletes a single shipment.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the shipment to remove",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Shipment deleted successfully."
+          },
+          "404": {
+            "description": "Shipment not found"
+          }
+        }
+      }
+    },
+    "/shipments/bid": {
+      "post": {
+        "tags": ["Shipments"],
+        "summary": "Carrier bids on a shipment",
+        "description": "Allows a carrier to place a bid on a shipment.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Bid details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["shipmentId", "bidAmount", "proposedTimeline"],
+              "properties": {
+                "shipmentId": {
+                  "type": "string",
+                  "example": "660be22ac2716a2a4a2cd4f7"
+                },
+                "bidAmount": {
+                  "type": "number",
+                  "example": 1500
+                },
+                "remarks": {
+                  "type": "string",
+                  "example": "here will be remarks"
+                },
+                "proposedTimeline": {
+                  "type": "string",
+                  "example": "2023-12-20"
+                }
+              }
+            }
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Bid placed successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/shipments/mybids": {
+      "get": {
+        "tags": ["Shipments"],
+        "summary": "View all bids made by the carrier",
+        "description": "Allows a carrier to view all their bids and the statuses.",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of all bids made by the carrier",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "shipmentId": {
+                    "type": "string",
+                    "example": "5f78c6f5c29e8b0018377b8d"
+                  },
+                  "origin": {
+                    "type": "string",
+                    "example": "New York, NY"
+                  },
+                  "destination": {
+                    "type": "string",
+                    "example": "Los Angeles, CA"
+                  },
+                  "bidAmount": {
+                    "type": "number",
+                    "example": 1500
+                  },
+                  "proposedTimeline": {
+                    "type": "string",
+                    "example": "2023-12-20"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "pending"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/blogs/create": {
+      "post": {
+        "tags": ["Blog"],
+        "summary": "Creates a new blog post",
+        "description": "Allows an admin to create a new blog post with the provided information.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "blog",
+            "description": "Blog post data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateBlog"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Blog post created successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/blogs": {
+      "get": {
+        "tags": ["Blog"],
+        "summary": "Retrieves all blog posts",
+        "description": "Gets a list of all blog posts.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "A list of blog posts"
+          }
+        }
+      }
+    },
+    "/blogs/{id}": {
+      "get": {
+        "tags": ["Blog"],
+        "summary": "Retrieves a single blog post",
+        "description": "Gets a single blog post by ID.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "ID of the blog post to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed information about the blog post"
+          },
+          "404": {
+            "description": "Blog post not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Blog"],
+        "summary": "Updates a single blog post",
+        "description": "Updates the details of an existing blog post by ID.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "ID of the blog post to update"
+          },
+          {
+            "in": "body",
+            "name": "blog",
+            "description": "Blog post data to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateBlog"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blog post updated successfully"
+          },
+          "404": {
+            "description": "Blog post not found"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Blog"],
+        "summary": "Deletes a single blog post",
+        "description": "Deletes a blog post by ID.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "ID of the blog post to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blog post deleted successfully"
+          },
+          "404": {
+            "description": "Blog post not found"
+          }
+        }
+      }
+    },
+    "/guide/create": {
+      "post": {
+        "tags": ["Guide"],
+        "summary": "create a new guide post",
+        "description": "Allows an admin to create a new guide post with the provided information.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "guide",
+            "description": "guide post data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateGuide"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Guide post created successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/guides": {
+      "get": {
+        "tags": ["Guide"],
+        "summary": "Retrieves all guide posts",
+        "description": "Gest a List of all guide post",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "A list of guide posts"
+          }
+        }
+      }
+    },
+    "/guide/{id}": {
+      "get": {
+        "tags": ["Guide"],
+        "summary": "Retrieves a single guide post",
+        "description": "Gets a Single guide post by ID",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "ID of the guide to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed information about the guide post"
+          },
+          "404": {
+            "description": "Guide Post not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Guide"],
+        "summary": "Update a single guide post",
+        "description": "updates the details od an existing guide post by ID",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "ID of the guide post to update"
+          },
+          {
+            "in": "body",
+            "name": "guide",
+            "description": "Guide post data to Update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateGuide"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Guide post updated successfully"
+          },
+          "404": {
+            "description": "Guide post not found"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Guide"],
+        "summary": "Delete a single guide post",
+        "description": "Delete a guide post by ID",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of the guide post to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Guide post deleted successfully"
+          },
+          "404": {
+            "description": "Guide post not found"
+          }
+        }
+      }
+    },
+    "/notifications": {
+      "get": {
+        "tags": ["Notifications"],
+        "summary": "Get all notifications for the logged-in user",
+        "description": "Retrieves a list of all notifications for the logged-in user.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "A list of notifications.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Notification"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        }
+      }
+    },
+    "/notifications/{id}": {
+      "get": {
+        "tags": ["Notifications"],
+        "summary": "Get a single notification by ID",
+        "description": "Retrieves a specific notification by its ID.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the notification to retrieve",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notification found",
+            "schema": {
+              "$ref": "#/definitions/Notification"
+            }
+          },
+          "404": {
+            "description": "Notification not found"
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        }
+      }
+    },
+    "/notifications/{id}/markAsRead": {
+      "post": {
+        "tags": ["Notifications"],
+        "summary": "Mark a notification as read",
+        "description": "Marks a notification as read by its ID.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the notification to mark as read",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notification marked as read successfully"
+          },
+          "404": {
+            "description": "Notification not found"
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        }
+      }
+    },
+    "/chat/": {
+      "post": {
+        "tags": ["Chat"],
+        "summary": "Create a new chat",
+        "description": "Creates a new chat session with the specified members.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Chat creation request body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["senderId", "receiverId"],
+              "properties": {
+                "senderId": {
+                  "type": "string",
+                  "example": "660e89859af961d0533e839b"
+                },
+                "receiverId": {
+                  "type": "string",
+                  "example": "660e8ba5250b3dee8c3e0de2"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chat created successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/chat/{userId}": {
+      "get": {
+        "tags": ["Chat"],
+        "summary": "Get user chats",
+        "description": "Retrieves all chats for a specified user.",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "The ID of the user to retrieve chats for",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of chats retrieved successfully"
+          },
+          "404": {
+            "description": "No chats found for the user"
+          }
+        }
+      }
+    },
+    "/chat/find/{firstId}/{secondId}": {
+      "get": {
+        "tags": ["Chat"],
+        "summary": "Find a chat between two users",
+        "description": "Finds an existing chat between two specified users.",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "firstId",
+            "description": "The ID of the first user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "secondId",
+            "description": "The ID of the second user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chat found successfully"
+          },
+          "404": {
+            "description": "No chat found between the two users"
+          }
+        }
+      }
+    },
+    "/message/": {
+      "post": {
+        "tags": ["Chat"],
+        "summary": "Add a new message",
+        "description": "Sends a new message to a specified chat.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Message sending request body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["chatId", "senderId", "text"],
+              "properties": {
+                "chatId": {
+                  "type": "string",
+                  "example": "66408329eeacd8d394972d0a"
+                },
+                "receiverId": {
+                  "type": "string",
+                  "example": "660e89859af961d0533e839b"
+                },
+                "text": {
+                  "type": "string",
+                  "example": "Hello, how are you?"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message sent successfully"
+          },
+          "400": {
+            "description": "Invalid input, object invalid"
+          },
+          "404": {
+            "description": "Chat not found"
+          }
+        }
+      }
+    },
+    "/message/{chatId}": {
+      "get": {
+        "tags": ["Chat"],
+        "summary": "Get messages for a chat",
+        "description": "Retrieves all messages from a specific chat.",
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "chatId",
+            "description": "The ID of the chat to retrieve messages",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Messages retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "404": {
+            "description": "No messages found for the chat"
+          }
+        }
+      }
+    },
+    "/subscription": {
+      "post": {
+        "tags": ["Subscription"],
+        "summary": "Create Subscription",
+        "description": "Sends a new message to a specified chat.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "subscription create body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["email", "priceId"],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "tamim@gmail.com"
+                },
+                "priceId": {
+                  "type": "string",
+                  "example": "price_1N1ZBIJggWefJ04AzhNvgacQ"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message sent successfully"
+          },
+          "400": {
+            "description": "Invalid input, object invalid"
+          },
+          "404": {
+            "description": "Chat not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "register": {
+      "type": "object",
+      "required": ["firstName", "lastName", "email", "password"],
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "userType": {
+          "type": "string"
+        }
+      }
+    },
+    "registerResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "login": {
+      "type": "object",
+      "required": ["email", "password"],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "ruhul.cse123@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "test123"
+        }
+      }
+    },
+    "loginResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "_id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "6601e50217fc70b39ecc269b"
+        },
+        "firstName": {
+          "type": "string",
+          "example": "Ruhul"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Amin"
+        },
+        "email": {
+          "type": "string",
+          "example": "ruhul.cse123@gmail.com"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "5867987979656"
+        },
+        "userType": {
+          "type": "string",
+          "example": "Admin"
+        },
+        "userStatus": {
+          "type": "string",
+          "example": "Active"
+        },
+        "passport": {
+          "type": "string",
+          "example": "575558686868686868"
+        },
+        "nid": {
+          "type": "string",
+          "example": "tes12344545"
+        },
+        "postalCode": {
+          "type": "string",
+          "example": "2216"
+        },
+        "address": {
+          "type": "string",
+          "example": "Dhaka,Bangladesh"
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "example": "13/06/1996"
+        }
+      }
+    },
+    "Shipment": {
+      "type": "object",
+      "required": [
+        "origin",
+        "destination",
+        "cargoType",
+        "weightKG",
+        "offeringPrice",
+        "numberOfLoads",
+        "pickUpDate",
+        "deliveryDate"
+      ],
+      "properties": {
+        "origin": { "type": "string", "example": "New York, NY" },
+        "destination": { "type": "string", "example": "Los Angeles, CA" },
+        "cargoType": { "type": "string", "example": "Electronics" },
+        "dimensions": {
+          "type": "object",
+          "properties": {
+            "length": { "type": "number", "example": 10 },
+            "width": { "type": "number", "example": 5 },
+            "height": { "type": "number", "example": 2 }
+          }
+        },
+        "weightKG": { "type": "number", "example": 1200 },
+        "offeringPrice": { "type": "number", "example": 2000 },
+        "numberOfLoads": { "type": "number", "example": 1 },
+        "pickUpDate": { "type": "string", "example": "2023-10-05" },
+        "deliveryDate": { "type": "string", "example": "2023-10-10" }
+      }
+    },
+    "CreateBlog": {
+      "type": "object",
+      "required": ["title", "body", "category"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Exploring the World of Quantum Computing"
+        },
+        "body": {
+          "type": "string",
+          "example": "Quantum computing is a rapidly growing field that could revolutionize technology by making certain types of computations vastly more efficient..."
+        },
+        "image": {
+          "type": "string",
+          "description": "URL to the image associated with the blog post",
+          "example": "http://example.com/images/quantum.jpg"
+        },
+        "category": {
+          "type": "string",
+          "example": "Technology"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "example": ["Quantum Mechanics", "Computing", "Technology Trends"]
+        },
+        "status": {
+          "type": "string",
+          "default": "posted",
+          "example": "posted",
+          "description": "Status of the blog post"
+        }
+      }
+    },
+    "CreateGuide": {
+      "type": "object",
+      "required": ["title", "category", "type"],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "video": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Notification": {
+      "type": "object",
+      "required": ["sender_id", "recipient_id", "title"],
+      "properties": {
+        "sender_id": {
+          "type": "string",
+          "description": "ID of the sender"
+        },
+        "recipient_id": {
+          "type": "string",
+          "description": "ID of the recipient"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the notification"
+        },
+        "link": {
+          "type": "string",
+          "description": "Link related to the notification"
+        },
+        "isRead": {
+          "type": "boolean",
+          "description": "Status of the notification read or not",
+          "default": false
+        },
+        "additional_data": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Any additional data associated with the notification"
+        }
+      }
+    }
+  }
+}
