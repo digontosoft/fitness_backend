@@ -3,24 +3,18 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const cors = require("cors");
 const http = require("http");
-const { init } = require("./socket");
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger.json");
+const swaggerDocumentation = require("./swagger");
 const connectDB = require("./config/db");
-const userRoutes = require("./routes/userRoutes");
-const auth = require("./middleware/auth");
 const routes = require("./routes/index");
 
 dotenv.config();
 connectDB();
 const app = express();
 const server = http.createServer(app);
-const io = init(server); // Initialize Socket.IO
 
 app.use(cors());
-swaggerDocument.host =
-  process.env.API_HOST || "default-host-if-env-var-not-set";
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocumentation));
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
