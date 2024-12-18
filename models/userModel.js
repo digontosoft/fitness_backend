@@ -24,49 +24,9 @@ const userSchema = new mongoose.Schema(
         "Please fill a valid email address",
       ],
     },
-    phoneNumber: {
-      type: String,
-      required: false,
-      trim: true,
-    },
     password: {
       type: String,
       required: true,
-    },
-    dateOfBirth: {
-      type: Date,
-      required: false,
-    },
-    address: {
-      type: String,
-      required: false,
-      trim: true,
-    },
-    postalCode: {
-      type: String,
-      required: false,
-      trim: true,
-    },
-    nid: {
-      type: String,
-      required: false,
-      unique: true,
-      sparse: true,
-      trim: true,
-    },
-    passport: {
-      type: String,
-      required: false,
-      unique: true,
-      sparse: true,
-      trim: true,
-    },
-    agent_code: {
-      type: String,
-      required: false,
-      unique: true,
-      sparse: true,
-      trim: true,
     },
     userType: {
       type: String,
@@ -74,30 +34,30 @@ const userSchema = new mongoose.Schema(
       enum: [
         "supperadmin",
         "admin",
-        "user",
-        "guest",
-        "carrier",
-        "shipper",
-        "broker",
-        "agent",
+        "trainee",
       ],
-      default: "user",
+      default: "trainee",
     },
     userStatus: {
       type: String,
       required: true,
-      enum: [
-        "Pending",
-        "Active",
-        "Deactivated",
-        "Suspended",
-        "Rejected",
-        "Blocked",
-      ],
-      default: "Pending",
+      enum: ["Active", "Inactive"],
+      default: "Active",
     },
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    picture: {
+      type: String,
+    },
+    gender: {
+      type: String,
+      required: true,
+      enum: ["male", "female", "other"],
+      default: "male",
+    },
   },
   { timestamps: true }
 );

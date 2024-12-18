@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+dotenv.config();
 const morgan = require("morgan");
 const cors = require("cors");
 const http = require("http");
@@ -7,8 +8,8 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocumentation = require("./swagger");
 const connectDB = require("./config/db");
 const routes = require("./routes/index");
-
-dotenv.config();
+const passport = require('passport');
+require('./config/passport');
 connectDB();
 const app = express();
 const server = http.createServer(app);
@@ -20,6 +21,8 @@ if (process.env.NODE_ENV === "development") {
 }
 app.use(express.static("public"));
 app.use(express.json());
+
+app.use(passport.initialize());
 
 app.use(routes);
 app.use("/api/v1", routes);
