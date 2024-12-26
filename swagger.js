@@ -1,5 +1,6 @@
 const swaggerJsDoc = require("swagger-jsdoc");
 const authDocs = require("./docs/auth");
+const userDocs = require("./docs/user");
 const swaggerDefinition = {
   openapi: "3.0.0",
   info: {
@@ -36,6 +37,7 @@ const swaggerOptions = {
 // Merge paths
 swaggerOptions.swaggerDefinition.paths = {
   ...authDocs.paths,
+  ...userDocs.paths,
 };
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
